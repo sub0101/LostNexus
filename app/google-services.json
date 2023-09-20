@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "767857134975",
+    "project_id": "lostnexus0101",
+    "storage_bucket": "lostnexus0101.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:767857134975:android:4109704de72ca4b8949e4a",
+        "android_client_info": {
+          "package_name": "com.example.lostnexus"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "767857134975-q9ja4565kmi5hvscv4ascmsjrj26q02v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCFFYZ2Bn5lLIs8mWHeg1A1embNBD0mbZU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "767857134975-q9ja4565kmi5hvscv4ascmsjrj26q02v.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
