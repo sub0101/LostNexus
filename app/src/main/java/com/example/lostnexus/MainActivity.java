@@ -85,25 +85,7 @@ public void logout(View view)
     goToLoginActivity();
 }
 
-public void setInitialView(MainActivity mainActivity)
-{
-    setSupportActionBar(mainBinding.mainIncludeToolbar.toolbar);
-    ActionBarDrawerToggle toggle =  new ActionBarDrawerToggle(this , mainBinding.drawerLayout , mainBinding.mainIncludeToolbar.toolbar,R.string.open, R.string.close);
-    mainBinding.drawerLayout.addDrawerListener(toggle);
-toggle.syncState();
-    NavigationView navigationView = mainBinding.navigation;
-    bottomNavigationView = mainBinding.homeFragment.bottomNavigationView;
-    bottomNavigationView.setBackground(null);
-    navigationView.setNavigationItemSelectedListener(this);
-   bottomNavigationView.setOnItemSelectedListener(new BottomNavigationItemListner());
-  bottomNavigationView.setSelectedItemId(R.id.home_bottomMenu);
- View view =   navigationView.getHeaderView(0);
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-        headerMainBinding = DataBindingUtil.inflate(getLayoutInflater() , view.getSourceLayoutResId() , mainBinding.navigation , true);
-    }
-    getSupportFragmentManager().beginTransaction().replace(mainBinding.mainContainer.getId() , new home_fragment()).commit();
 
-}
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -140,6 +122,22 @@ toggle.syncState();
         startActivity(intent);
 //        overridePendingTransition(android.R.transition.slide_bottom ,android.R.transition.slide_bottom );
 //        overridePendingTransition(Animation.);
+
+    }
+
+    public void setInitialView(MainActivity mainActivity)
+    {
+        setSupportActionBar(mainBinding.mainIncludeToolbar.toolbar);
+        ActionBarDrawerToggle toggle =  new ActionBarDrawerToggle(this , mainBinding.drawerLayout , mainBinding.mainIncludeToolbar.toolbar,R.string.open, R.string.close);
+        mainBinding.drawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
+        NavigationView navigationView = mainBinding.navigation;
+
+        View view =   navigationView.getHeaderView(0);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            headerMainBinding = DataBindingUtil.inflate(getLayoutInflater() , view.getSourceLayoutResId() , mainBinding.navigation , true);
+        }
+        getSupportFragmentManager().beginTransaction().replace(mainBinding.mainContainer.getId() , new home_fragment()).commit();
 
     }
 }

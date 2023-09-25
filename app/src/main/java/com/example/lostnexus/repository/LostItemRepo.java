@@ -21,6 +21,7 @@ import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -34,6 +35,7 @@ public class LostItemRepo {
 
     public LostItemRepo() {
         lostItemMutableLiveData = new MutableLiveData<>(new LostItem());
+        allitems =  new MutableLiveData<>(new ArrayList<>());
         shouldClose = new MutableLiveData<>(new Boolean(false));
     }
 
@@ -47,6 +49,7 @@ public class LostItemRepo {
 
     public LostItem getLostItem() {
         LostItem lostItem = lostItemMutableLiveData.getValue();
+
         return lostItem;
     }
 
@@ -110,15 +113,19 @@ public class LostItemRepo {
     }
 
     public  MutableLiveData<List<LostItem>> getAllItems(){
-List<LostItem> itemlist = null;
+List<LostItem> itemlist = new ArrayList<>();
+
        reference.addValueEventListener(new ValueEventListener() {
            @Override
            public void onDataChange(@NonNull DataSnapshot snapshot) {
                for (DataSnapshot postSnapshot: snapshot.getChildren()) {
-                 LostItem lostItem = snapshot.getValue(LostItem.class);
+                 LostItem lostItem = postSnapshot.getValue(LostItem.class);
                    itemlist.add(lostItem);
 
                }
+               System.out.println("after the values");
+               allitems.setValue(itemlist);
+
            }
 
            @Override
@@ -126,7 +133,7 @@ List<LostItem> itemlist = null;
 
            }
        });
-       allitems.setValue(itemlist);
+
         return allitems;
     }
 

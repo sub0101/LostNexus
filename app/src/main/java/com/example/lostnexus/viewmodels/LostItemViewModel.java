@@ -35,7 +35,8 @@ shouldClose  = lostItemRepo.shouldClose;
         lostItemLiveData = lostItemRepo.getLostItemMutableLiveData();
         return lostItemLiveData;
     }
-    public LiveData<List<LostItem>> getAllItems(){
+    public MutableLiveData<List<LostItem>> getAllItems(){
+allitems =  lostItemRepo.getAllItems();
         return allitems;
     }
 

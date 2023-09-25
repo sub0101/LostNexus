@@ -1,8 +1,13 @@
 package com.example.lostnexus.models;
 
+import android.widget.ImageView;
+
 import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
+import androidx.databinding.BindingAdapter;
 import androidx.databinding.library.baseAdapters.BR;
+
+import com.bumptech.glide.Glide;
 
 public class LostItem extends BaseObservable {
     public String detail="" , type="" , date="" , time="" , location="" , nearby="" ,image="",state,  city,uploadedBy="";
@@ -126,5 +131,8 @@ public class LostItem extends BaseObservable {
         this.city = city;
     }
 
-
+    @BindingAdapter({"image"})
+    public static void setItemImage(ImageView imageView, String imgUrl) {
+        Glide.with(imageView.getContext()).load(imgUrl).into(imageView);
+    }
 }
