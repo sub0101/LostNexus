@@ -89,7 +89,8 @@ public void logout(View view)
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.edit_profile) {//
+        System.out.println("inside profile");
+        if (item.getItemId() == R.id.edit_profile) {
 
                   Intent intent = new Intent(MainActivity.this , EditProfile.class);
                 startActivity(intent);
@@ -117,12 +118,8 @@ public void logout(View view)
 
 
     public void add_itemFragment(View view){
-//ItemAddFragment.display(getSupportFragmentManager());
         Intent intent =  new Intent(MainActivity.this , ItemAddFragment.class);
         startActivity(intent);
-//        overridePendingTransition(android.R.transition.slide_bottom ,android.R.transition.slide_bottom );
-//        overridePendingTransition(Animation.);
-
     }
 
     public void setInitialView(MainActivity mainActivity)
@@ -132,7 +129,7 @@ public void logout(View view)
         mainBinding.drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
         NavigationView navigationView = mainBinding.navigation;
-
+navigationView.setNavigationItemSelectedListener(this);
         View view =   navigationView.getHeaderView(0);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             headerMainBinding = DataBindingUtil.inflate(getLayoutInflater() , view.getSourceLayoutResId() , mainBinding.navigation , true);

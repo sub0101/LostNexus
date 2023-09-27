@@ -39,8 +39,8 @@ System.out.println(itemCardBinding+"what is this");
 
     @Override
     public void onBindViewHolder(@NonNull ItemViewHolder holder, int position) {
-//     LostItem lostItem  = lostItemList.get(position);
-//        holder.itemCardBinding.setItemdata(lostItem);
+     LostItem lostItem  = lostItemList.get(position);
+        holder.itemCardBinding.setItemdata(lostItem);
     }
 
     @Override

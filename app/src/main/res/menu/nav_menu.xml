@@ -8,21 +8,22 @@
 
     <item
         android:id="@+id/search"
-        android:icon="@drawable/home"
+        android:icon="@android:drawable/ic_menu_search"
         android:title="Search" />
 
     <item
         android:id="@+id/placeholder"
-        android:title="Lost_item" />
+        android:title="Lost_item"
+        android:enabled="false"/>
 
     <item
         android:id="@+id/notification"
-        android:icon="@drawable/home"
+        android:icon="@android:drawable/ic_popup_reminder"
         android:title="Notification" />
 
     <item
         android:id="@+id/chat"
-        android:icon="@drawable/home"
+        android:icon="@android:drawable/sym_action_chat"
         android:title="Chat" />
 
 </menu>

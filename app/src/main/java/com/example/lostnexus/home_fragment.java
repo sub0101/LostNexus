@@ -1,5 +1,6 @@
 package com.example.lostnexus;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -35,22 +36,16 @@ import java.util.List;
 public class home_fragment extends Fragment {
 
 FragmentHomeScreenBinding homeScreenBinding;
-RecyclerView recyclerView1 , recyclerView2;
-List<LostItem> lostItemList;
-ItemListAdapter itemListAdapter;
-LostItemViewModel lostItemViewModel;
-BottomNavigationView bottomNavigationView;
+    BottomNavigationView bottomNavigationView;
 
+InitialItemFragment initialItemFragment;
+AllItemsFragment allItemsFragment;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         homeScreenBinding = DataBindingUtil.inflate(inflater , R.layout.fragment_home_screen, container , false);
-      lostItemViewModel  = new ViewModelProvider(this).get(LostItemViewModel.class);
-        System.out.println("inside the fragment cretead");
-
         return homeScreenBinding.getRoot();
-//        return inflater.inflate(R.layout.fragment_home_screen, container, false);
+
     }
 
 
@@ -58,39 +53,17 @@ BottomNavigationView bottomNavigationView;
     public void onStart() {
         super.onStart();
 
-        lostItemViewModel.getAllItems().observe(this, new Observer<List<LostItem>>() {
-            @Override
-            public void onChanged(List<LostItem> lostItems) {
-           for(LostItem lostItem :lostItems){
-               System.out.println(lostItem.getDetail());
-           }
-showItems(lostItems);
-            }
-        });
-
-
-
-
-    }
-
-    void showItems(List<LostItem> items){
-        recyclerView1=  homeScreenBinding.itemviewWeek;
-        itemListAdapter  = new ItemListAdapter(getContext() ,items);
-        recyclerView1.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView1.setNestedScrollingEnabled(true);
-        recyclerView1.setAdapter(itemListAdapter);
-        recyclerView2 = homeScreenBinding.recentLostview;
-        itemListAdapter = new ItemListAdapter(getContext() , items);
-        recyclerView2.setLayoutManager(new GridLayoutManager(getContext() , 2));
-        recyclerView2.setNestedScrollingEnabled(true);
-
-        recyclerView2.setAdapter( itemListAdapter);
+setInitialView();
     }
 
 
-    public void setInitialView(MainActivity mainActivity)
+
+
+    public void setInitialView()
     {
 
+        allItemsFragment = new AllItemsFragment();
+        initialItemFragment  = new InitialItemFragment();
         bottomNavigationView = homeScreenBinding.bottomNavigationView;
         bottomNavigationView.setBackground(null);
         bottomNavigationView.setOnItemSelectedListener(new home_fragment.BottomNavigationItemListner());
@@ -104,14 +77,22 @@ showItems(lostItems);
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             int id = item.getItemId();
             if(id == R.id.home_bottomMenu) {
-
+setCurrentFragment(initialItemFragment);
             }
             else if(id == R.id.search){
-
+//setCurrentFragment(allItemsFragment);
+                Intent intent = new Intent(getActivity().getApplication() , AllItemsFragment.class);
+                startActivity(intent);
             }
             return true;
         }
 
+    }
+    private void setCurrentFragment(Fragment fragment){
+//            .beginTransaction().apply {
+//        replace(R.id.flFragment,fragment)
+//        commit()
+        getFragmentManager().beginTransaction().replace(homeScreenBinding.initialContainer.getId() , fragment).commit();
     }
 
 }

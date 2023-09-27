@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools" >
 
     <com.google.android.material.appbar.AppBarLayout
-
+android:id="@+id/actionbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         >

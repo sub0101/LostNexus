@@ -33,6 +33,9 @@
             android:name=".ItemAddFragment"
             android:exported="true" />
         <activity
+            android:name=".AllItemsFragment"
+            android:exported="true" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
 
