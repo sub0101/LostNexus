@@ -149,7 +149,7 @@ public class mapFragment extends AppCompatActivity implements OnMapReadyCallback
         });
 
         if (!Places.isInitialized()) {
-            Places.initialize(getApplicationContext(), "AIzaSyBWBobt-irrOEDKnnvAMtgvZZONVsriqJU");
+            Places.initialize(getApplicationContext(), getString(R.string.google_api_key));
         }
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapView);
         mapFragment.getMapAsync(this);

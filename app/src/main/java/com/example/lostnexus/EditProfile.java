@@ -48,8 +48,6 @@ public class EditProfile extends AppCompatActivity {
         });
         editProfileBinding.genderChipGroup.setOnCheckedStateChangeListener((group, checkedIds) -> {
        Chip chip = group.findViewById(checkedIds.get(0));
-       System.out.println("inside the chips");
-       System.out.println();
        mainViewModel.getUserProfileMutableLiveData().getValue().setGender(chip.getText().toString());
         });
 
@@ -72,18 +70,14 @@ public class EditProfile extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(resultCode ==RESULT_OK){
-System.out.println("inside result_ok");
             if(requestCode == 200){
                 ProgressDialog progressDialog
                         = new ProgressDialog(this);
                 progressDialog.setTitle("Uploading...");
                 progressDialog.show();
                 Uri selectedImageUri = data.getData();
-                System.out.println("inside request_ok");
 
                 if (selectedImageUri !=null) {
-                    System.out.println("inside final");
-                    // update the preview image in the layout
 System.out.println(selectedImageUri);
 mainViewModel.getUserProfileMutableLiveData().getValue().setImage(String.valueOf(selectedImageUri));
                    editProfileBinding.imageviewAccountProfile.setImageURI(selectedImageUri);

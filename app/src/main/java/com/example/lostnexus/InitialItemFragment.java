@@ -1,6 +1,9 @@
 package com.example.lostnexus;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
@@ -10,14 +13,9 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
 import com.example.lostnexus.databinding.FragmentInitialItemBinding;
-import com.example.lostnexus.models.LostItem;
-import com.example.lostnexus.viewmodels.LostItemViewModel;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.example.lostnexus.models.FoundItem;
+import com.example.lostnexus.viewmodels.FoundItemViewModel;
 
 import java.util.List;
 
@@ -26,30 +24,25 @@ public class InitialItemFragment extends Fragment {
 
 
     RecyclerView recyclerView1 , recyclerView2;
-    List<LostItem> lostItemList;
+    List<FoundItem> lostItemList;
     ItemListAdapter itemListAdapter;
-    LostItemViewModel lostItemViewModel;
+    FoundItemViewModel foundItemViewModel;
 FragmentInitialItemBinding initialItemBinding;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         initialItemBinding = DataBindingUtil.inflate(inflater , R.layout.fragment_initial_item, container,false);
-       lostItemViewModel = new ViewModelProvider(this).get(LostItemViewModel.class);
+       foundItemViewModel = new ViewModelProvider(this).get(FoundItemViewModel.class);
         return initialItemBinding.getRoot();
-//        return inflater.inflate(R.layout.fragment_initial_item, container, false);
     }
 
     @Override
     public void onStart() {
         super.onStart();
 
-        lostItemViewModel.getAllItems().observe(this, new Observer<List<LostItem>>() {
+        foundItemViewModel.getAllItems().observe(this, new Observer<List<FoundItem>>() {
             @Override
-            public void onChanged(List<LostItem> lostItems) {
-                for(LostItem lostItem :lostItems){
-                    System.out.println(lostItem.getDetail());
-                }
+            public void onChanged(List<FoundItem> lostItems) {
                 showItems(lostItems);
             }
         });
@@ -61,7 +54,7 @@ FragmentInitialItemBinding initialItemBinding;
 
 
 
-    void showItems(List<LostItem> items){
+    void showItems(List<FoundItem> items){
         recyclerView1=  initialItemBinding.itemviewWeek;
         itemListAdapter  = new ItemListAdapter(getContext() ,items);
         recyclerView1.setLayoutManager(new LinearLayoutManager(getContext()));

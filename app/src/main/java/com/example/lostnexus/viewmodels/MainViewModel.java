@@ -12,14 +12,14 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.bumptech.glide.Glide;
+import com.example.lostnexus.FoundItemListAdapter;
 import com.example.lostnexus.repository.Repository;
-import com.example.lostnexus.models.LostItem;
 import com.example.lostnexus.models.UserProfile;
 
 public class MainViewModel extends AndroidViewModel {
 
     MutableLiveData<UserProfile> userProfileMutableLiveData;
-    MutableLiveData<LostItem> lostItemLiveData;
+    MutableLiveData<FoundItemListAdapter> lostItemLiveData;
     Repository  repository;
     public MainViewModel(@NonNull Application application) {
         super(application);

@@ -3,8 +3,6 @@ package com.example.lostnexus;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
-import android.location.Address;
-import android.location.Geocoder;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -17,39 +15,38 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
-import android.util.Pair;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.ImageView;
+import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.example.lostnexus.databinding.LostAddFragmentBinding;
-import com.example.lostnexus.models.LostItem;
-import com.example.lostnexus.viewmodels.LostItemViewModel;
-import com.example.lostnexus.viewmodels.MainViewModel;
-import com.google.android.gms.maps.model.LatLng;
+import com.example.lostnexus.models.FoundItem;
+import com.example.lostnexus.viewmodels.FoundItemViewModel;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
-import com.google.android.material.timepicker.MaterialTimePicker;
-import com.google.android.material.timepicker.TimeFormat;
 
-import java.io.IOException;
+import org.w3c.dom.Text;
+
+import java.util.Arrays;
 import java.util.List;
 
 
 public class ItemAddFragment extends AppCompatActivity {
 
 LostAddFragmentBinding lostAddFragmentBinding;
-LostItemViewModel mainViewModel;
+FoundItemViewModel mainViewModel;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
      lostAddFragmentBinding = LostAddFragmentBinding.inflate(getLayoutInflater());
         setContentView(lostAddFragmentBinding.getRoot());
-        mainViewModel = new ViewModelProvider(this).get(LostItemViewModel.class);
+        mainViewModel = new ViewModelProvider(this).get(FoundItemViewModel.class);
 //        setStyle(DialogFragment.STYLE_NORMAL , R.style.AppTheme_FullScreenDialog);
 setFousChangeListner();
 
@@ -67,16 +64,17 @@ setFousChangeListner();
     @Override
     public void onStart() {
         super.onStart();
-        mainViewModel.getLostItemLiveData().observe(this, new Observer<LostItem>() {
+        mainViewModel.getLostItemLiveData().observe(this, new Observer<FoundItem>() {
             @Override
-            public void onChanged(LostItem lostItem) {
-                System.out.println("inside lost item mutable data oberserver");
-                Toast.makeText(getApplicationContext() , "indise", Toast.LENGTH_SHORT).show();
+            public void onChanged(FoundItem lostItem) {
                 lostAddFragmentBinding.setLostItem(lostItem);
             }
         });
 
-//        getDialog().getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        List<String> items = Arrays.asList(getResources().getStringArray(R.array.items));
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getApplicationContext() ,android.R.layout.simple_list_item_1 , items);
+        lostAddFragmentBinding.itemTypeAutoComplete.setAdapter(arrayAdapter);
+        lostAddFragmentBinding.itemTypeAutoComplete.setThreshold(1);
 
     }
     public void gotomap(View view)
@@ -98,8 +96,6 @@ setFousChangeListner();
                     double longt = result.getData().getDoubleExtra("longt" , -1);
 lostAddFragmentBinding.lattitude.setText(String.valueOf(latt));
 lostAddFragmentBinding.longtitude.setText(String.valueOf(longt));
-System.out.println(st + "this is the address");
-System.out.println(latt + " "+longt);
                 }
             });
 
@@ -130,25 +126,67 @@ public void addImage(View view){
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        if(data==null) return ;
         Uri selectedImageUri = data.getData();
 if(requestCode == 200){
     lostAddFragmentBinding.itemImage.setImageURI(selectedImageUri);
-    mainViewModel.validate();
+
     mainViewModel.getLostItemLiveData().getValue().setImage(String.valueOf(selectedImageUri));
 }
+        mainViewModel.validate();
+        validateData();
     }
+
 
 
     void setFousChangeListner(){
-        lostAddFragmentBinding.detail.setOnFocusChangeListener(new FocusChangeListner());
-        lostAddFragmentBinding.date.setOnFocusChangeListener(new FocusChangeListner());
+
+        lostAddFragmentBinding.detail.addTextChangedListener(new TextChangeListner());
+        lostAddFragmentBinding.itemTypeAutoComplete.addTextChangedListener(new TextChangeListner());
+        lostAddFragmentBinding.location.addTextChangedListener(new TextChangeListner());
+        lostAddFragmentBinding.nearby.addTextChangedListener(new TextChangeListner());
+        lostAddFragmentBinding.time.addTextChangedListener(new TextChangeListner());
+        lostAddFragmentBinding.date.addTextChangedListener(new TextChangeListner());
+
+lostAddFragmentBinding.detail.setOnFocusChangeListener(new FocusChangeListner());
         lostAddFragmentBinding.time.setOnFocusChangeListener(new FocusChangeListner());
-        lostAddFragmentBinding.itemType.setOnFocusChangeListener(new FocusChangeListner());
+        lostAddFragmentBinding.itemTypeAutoComplete.setOnFocusChangeListener(new FocusChangeListner());
         lostAddFragmentBinding.location.setOnFocusChangeListener(new FocusChangeListner());
         lostAddFragmentBinding.nearby.setOnFocusChangeListener(new FocusChangeListner());
-
+        lostAddFragmentBinding.editimage.setOnFocusChangeListener(new FocusChangeListner());
+        lostAddFragmentBinding.date.setOnFocusChangeListener(new FocusChangeListner());
+        lostAddFragmentBinding.time.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addTime();
+            }
+        });
+        lostAddFragmentBinding.date.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addDate();
+            }
+        });
     }
 
+public class TextChangeListner implements  TextWatcher{
+
+    @Override
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        validateData();
+    }
+
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+validateData();
+System.out.println("yess");
+    }
+
+    @Override
+    public void afterTextChanged(Editable s) {
+validateData();
+    }
+}
 
     public class FocusChangeListner implements View.OnFocusChangeListener{
 
@@ -156,29 +194,35 @@ if(requestCode == 200){
         @Override
         public void onFocusChange(View v, boolean hasFocus) {
 
+            if(!hasFocus){
+                TextView textView = (TextView) v;
+                String val = textView.getText().toString();
+                System.out.println(v);
+                if (val.equals("")) {
+                    ((TextView) v).setError("required");
+                }
+                validateData();
+            }
             if (hasFocus) {
 
 
                 if (v == lostAddFragmentBinding.date) {
                     addDate();
                 }
+
                 else if(v==lostAddFragmentBinding.time) addTime();
 
-                TextView textView = (TextView) v;
-                String val = textView.getText().toString();
-                if (val.equals("")) {
-                    ((TextView) v).setError("required");
-                }
 
-                if (mainViewModel.validate()) {
-                    lostAddFragmentBinding.addItem.setEnabled(true);
-                }
+                validateData();
+
             }
         }
 
 
 
     }
+
+
     public void addDate(){
         MaterialDatePicker datePicker = MaterialDatePicker.Builder.datePicker().setTitleText("Select Date").
                 build();
@@ -201,12 +245,35 @@ if(requestCode == 200){
                 new TimePickerDialog.OnTimeSetListener() {
 
                     @Override
-                    public void onTimeSet(TimePicker view, int hourOfDay,
+                    public void onTimeSet(TimePicker view, int hour,
                                           int minute) {
+                        String format,min="";
+                        if (hour == 0){
+                            hour += 12;
 
+                            format = "AM";
+                        } else if (hour == 12) {
+                            format = "PM";
+                        } else if (hour > 12) {
+                            hour -= 12;
+                            format = "PM";
+                        } else {
+                            format = "AM";
+                        }
+
+                        if(minute >=0 && minute<10)
+                        {
+                            min =  "0"+minute;
+                        }
+                        else
+                        {
+                            min = String.valueOf(minute);
+                        }
+lostAddFragmentBinding.time.setText(hour + ":" + min+" "+format);
                     }
                 }, 0,0, false);
         timePickerDialog.show();
+
 
     }
 
@@ -263,5 +330,15 @@ String address = mainViewModel.getLostItemLiveData().getValue().getLocation();
 //
 //    }
 
+
+    void validateData(){
+        if (mainViewModel.validate()) {
+            lostAddFragmentBinding.addItem.setEnabled(true);
+        }
+        else {
+            lostAddFragmentBinding.addItem.setEnabled(false);
+
+        }
+    }
 
 }

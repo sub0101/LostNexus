@@ -11,4 +11,48 @@
     <string name="close">Close Drawer\n</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string-array name="items">
+        <item>Wallets</item>
+        <item>Keys</item>
+        <item>Mobile phones</item>
+        <item>Backpacks</item>
+        <item>Umbrellas</item>
+        <item>Textbooks</item>
+        <item>Notebooks</item>
+        <item>Laptops or tablets</item>
+        <item>Stationery (pens, pencils, calculators)</item>
+        <item>Jackets</item>
+        <item>Hats</item>
+        <item>Scarves</item>
+        <item>Gloves</item>
+        <item>Sunglasses</item>
+        <item>Headphones</item>
+        <item>Chargers and cables</item>
+        <item>Smartwatches</item>
+        <item>Portable speakers</item>
+        <item>Cameras</item>
+        <item>Student IDs</item>
+        <item>Drivers licenses</item>
+        <item>Credit/debit cards</item>
+        <item>Library cards</item>
+        <item>Sports gear (e.g., basketballs, soccer balls)</item>
+        <item>Prescription glasses</item>
+        <item>Reading glasses</item>
+        <item>Sunglasses</item>
+        <item>Rings</item>
+        <item>Necklaces</item>
+        <item>Bracelets</item>
+        <item>Watches</item>
+        <item>Water bottles</item>
+        <item>Lunchboxes</item>
+        <item>Musical instruments</item>
+        <item>Art supplies</item>
+        <item>Wallet chains</item>
+        <item>Gym bags</item>
+        <item>Water bottles</item>
+        <item>Yoga mats</item>
+
+    </string-array>
+    view raw
 </resources>

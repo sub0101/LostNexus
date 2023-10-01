@@ -6,7 +6,7 @@
     <data>
         <variable
             name="itemcard"
-            type="com.example.lostnexus.models.LostItem" />
+            type="com.example.lostnexus.models.FoundItem" />
     </data>
     <RelativeLayout
         android:layout_width="match_parent"

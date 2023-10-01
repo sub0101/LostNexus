@@ -5,18 +5,17 @@ import android.widget.ImageView;
 import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
 import androidx.databinding.BindingAdapter;
-import androidx.databinding.library.baseAdapters.BR;
 
 import com.bumptech.glide.Glide;
 
-public class LostItem extends BaseObservable {
+public class FoundItem extends BaseObservable {
     public String detail="" , type="" , date="" , time="" , location="" , nearby="" ,image="",state,  city,uploadedBy="";
   public  String lattitude="" , longtitude="";
 
-    public LostItem() {
+    public FoundItem() {
     }
 
-    public LostItem(String detail, String type, String date, String time, String location, String nearby, String image, String state, String city, String lattitude, String longtitude,String uploadedBy) {
+    public FoundItem(String detail, String type, String date, String time, String location, String nearby, String image, String state, String city, String lattitude, String longtitude,String uploadedBy) {
         this.detail = detail;
         this.type = type;
         this.date = date;

@@ -1,13 +1,12 @@
 package com.example.lostnexus.repository;
 
-import android.app.Application;
 import android.app.ProgressDialog;
 import android.net.Uri;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.lostnexus.models.LostItem;
+import com.example.lostnexus.models.FoundItem;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -25,37 +24,37 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class LostItemRepo {
+public class FoundItemRepo {
 
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference("LostItems");
 
-    MutableLiveData<LostItem> lostItemMutableLiveData;
-    MutableLiveData<List<LostItem>> allitems;
+    MutableLiveData<FoundItem> lostItemMutableLiveData;
+    MutableLiveData<List<FoundItem>> allitems;
   public  MutableLiveData<Boolean> shouldClose;
 
-    public LostItemRepo() {
-        lostItemMutableLiveData = new MutableLiveData<>(new LostItem());
+    public FoundItemRepo() {
+        lostItemMutableLiveData = new MutableLiveData<>(new FoundItem());
         allitems =  new MutableLiveData<>(new ArrayList<>());
         shouldClose = new MutableLiveData<>(new Boolean(false));
     }
 
-    public MutableLiveData<LostItem> getLostItemMutableLiveData() {
+    public MutableLiveData<FoundItem> getLostItemMutableLiveData() {
         return lostItemMutableLiveData;
     }
 
-    public void setLostItemMutableLiveData(MutableLiveData<LostItem> lostItemMutableLiveData) {
+    public void setLostItemMutableLiveData(MutableLiveData<FoundItem> lostItemMutableLiveData) {
         this.lostItemMutableLiveData = lostItemMutableLiveData;
     }
 
-    public LostItem getLostItem() {
-        LostItem lostItem = lostItemMutableLiveData.getValue();
+    public FoundItem getLostItem() {
+        FoundItem lostItem = lostItemMutableLiveData.getValue();
 
         return lostItem;
     }
 
 
     public void addLostItem(ProgressDialog progressDialog) {
-        LostItem lostItem = getLostItem();
+        FoundItem lostItem = getLostItem();
         lostItem.setUploadedBy(FirebaseAuth.getInstance().getCurrentUser().getUid());
 //        DatabaseReference reference  = FirebaseDatabase.getInstance().getReference("LostItems");
         reference.child(lostItem.getDetail() + lostItem.getTime()).setValue(lostItem).addOnSuccessListener(unused -> {
@@ -112,14 +111,14 @@ public class LostItemRepo {
 
     }
 
-    public  MutableLiveData<List<LostItem>> getAllItems(){
-List<LostItem> itemlist = new ArrayList<>();
+    public  MutableLiveData<List<FoundItem>> getAllItems(){
+List<FoundItem> itemlist = new ArrayList<>();
 
        reference.addValueEventListener(new ValueEventListener() {
            @Override
            public void onDataChange(@NonNull DataSnapshot snapshot) {
                for (DataSnapshot postSnapshot: snapshot.getChildren()) {
-                 LostItem lostItem = postSnapshot.getValue(LostItem.class);
+                 FoundItem lostItem = postSnapshot.getValue(FoundItem.class);
                    itemlist.add(lostItem);
 
                }

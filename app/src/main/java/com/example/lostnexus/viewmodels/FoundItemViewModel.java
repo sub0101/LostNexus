@@ -2,7 +2,6 @@ package com.example.lostnexus.viewmodels;
 
 import android.app.Application;
 import android.app.ProgressDialog;
-import android.view.View;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
@@ -12,37 +11,35 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.bumptech.glide.Glide;
-import com.example.lostnexus.models.LostItem;
-import com.example.lostnexus.repository.LostItemRepo;
-import com.example.lostnexus.repository.Repository;
-import com.google.android.material.textfield.TextInputLayout;
+import com.example.lostnexus.models.FoundItem;
+import com.example.lostnexus.repository.FoundItemRepo;
 
 import java.util.List;
 
-public class LostItemViewModel extends AndroidViewModel {
-    LostItemRepo lostItemRepo;
-    MutableLiveData<LostItem> lostItemLiveData;
+public class FoundItemViewModel extends AndroidViewModel {
+   FoundItemRepo lostItemRepo;
+    MutableLiveData<FoundItem> lostItemLiveData;
     public MutableLiveData<Boolean> shouldClose;
-    public MutableLiveData<List<LostItem>> allitems;
+    public MutableLiveData<List<FoundItem>> allitems;
 
-    public LostItemViewModel(@NonNull Application application) {
+    public FoundItemViewModel(@NonNull Application application) {
         super(application);
-lostItemRepo = new LostItemRepo();
+lostItemRepo = new FoundItemRepo();
 shouldClose  = lostItemRepo.shouldClose;
     }
 
-    public LiveData<LostItem> getLostItemLiveData() {
+    public LiveData<FoundItem> getLostItemLiveData() {
         lostItemLiveData = lostItemRepo.getLostItemMutableLiveData();
         return lostItemLiveData;
     }
-    public MutableLiveData<List<LostItem>> getAllItems(){
+    public MutableLiveData<List<FoundItem>> getAllItems(){
 allitems =  lostItemRepo.getAllItems();
         return allitems;
     }
 
 //
 
-    public void setLostItemLiveData(MutableLiveData<LostItem> lostItemLiveData) {
+    public void setLostItemLiveData(MutableLiveData<FoundItem> lostItemLiveData) {
         this.lostItemLiveData = lostItemLiveData;
     }
 
@@ -61,7 +58,7 @@ allitems =  lostItemRepo.getAllItems();
 
     public boolean validate(){
 
-        LostItem item = lostItemLiveData.getValue();
+        FoundItem item = lostItemLiveData.getValue();
 //        System.out.println(item.getDetail()+"inside the validate");
         boolean b = !item.getDetail().equals("") && !item.getImage().equals("") && !item.getNearby().equals("")
                 && !item.getLocation().equals("") && !item.getDate().equals("") && !item.getTime().equals("");
