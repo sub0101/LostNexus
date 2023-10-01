@@ -93,6 +93,7 @@ setFousChangeListner();
             new ActivityResultCallback<ActivityResult>() {
                 @Override
                 public void onActivityResult(ActivityResult result) {
+                    if(result==null) return;
                     String st = result.getData().getStringExtra("address");
                     double latt = result.getData().getDoubleExtra("lat" , -1);
                     double longt = result.getData().getDoubleExtra("longt" , -1);

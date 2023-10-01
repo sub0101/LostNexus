@@ -36,7 +36,7 @@ LostItemViewModel lostItemViewModel;
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        homeScreenBinding = DataBindingUtil.inflate(inflater , R.layout.lost_add_fragment, container , false);
+        homeScreenBinding = DataBindingUtil.inflate(inflater , R.layout.fragment_home_screen, container , false);
       lostItemViewModel  = new ViewModelProvider(this).get(LostItemViewModel.class);
         System.out.println("inside the fragment cretead");
 
@@ -47,25 +47,25 @@ LostItemViewModel lostItemViewModel;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        lostItemViewModel.getAllItems().observe(this, new Observer<List<LostItem>>() {
-            @Override
-            public void onChanged(List<LostItem> lostItemList) {
-           for(LostItem lostItem :lostItemList){
-               System.out.println(lostItem.getDetail());
-           }
-            }
-        });
+//        lostItemViewModel.getAllItems().observe(this, new Observer<List<LostItem>>() {
+//            @Override
+//            public void onChanged(List<LostItem> lostItemList) {
+//           for(LostItem lostItem :lostItemList){
+//               System.out.println(lostItem.getDetail());
+//           }
+//            }
+//        });
     }
 
     @Override
     public void onStart() {
         super.onStart();
         recyclerView1=  homeScreenBinding.itemviewWeek;
-        lostItemList = lostItemViewModel.getAllItems().getValue();
+//        lostItemList = lostItemViewModel.getAllItems().getValue();
 
-        itemListAdapter  = new ItemListAdapter(getContext()  ,lostItemList);
-        recyclerView1.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView1.setAdapter(itemListAdapter);
+//        itemListAdapter  = new ItemListAdapter(getContext()  ,lostItemList);
+//        recyclerView1.setLayoutManager(new LinearLayoutManager(getContext()));
+//        recyclerView1.setAdapter(itemListAdapter);
 //        Re customAdapter = new CustomAdapter(getContext() ,movies );
 //        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
 //        recyclerView.setAdapter(customAdapter);
