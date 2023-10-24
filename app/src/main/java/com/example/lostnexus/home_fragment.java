@@ -23,11 +23,13 @@ FragmentHomeScreenBinding homeScreenBinding;
     BottomNavigationView bottomNavigationView;
 
 InitialItemFragment initialItemFragment;
+NotificationFragment notificationFragment;
 AllItemsFragment allItemsFragment;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         homeScreenBinding = DataBindingUtil.inflate(inflater , R.layout.fragment_home_screen, container , false);
+
         return homeScreenBinding.getRoot();
 
     }
@@ -48,6 +50,7 @@ setInitialView();
 
         allItemsFragment = new AllItemsFragment();
         initialItemFragment  = new InitialItemFragment();
+        notificationFragment = new NotificationFragment();
         bottomNavigationView = homeScreenBinding.bottomNavigationView;
         bottomNavigationView.setBackground(null);
         bottomNavigationView.setOnItemSelectedListener(new home_fragment.BottomNavigationItemListner());
@@ -66,6 +69,9 @@ setCurrentFragment(initialItemFragment);
             else if(id == R.id.search){
                 Intent intent = new Intent(getActivity().getApplication() , AllItemsFragment.class);
                 startActivity(intent);
+            }
+            else if(id == R.id.notification){
+                setCurrentFragment(notificationFragment);
             }
             return true;
         }

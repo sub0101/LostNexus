@@ -6,6 +6,8 @@ import android.net.Uri;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.lostnexus.Notification;
+import com.example.lostnexus.authenticate.validators.LostItemValidator;
 import com.example.lostnexus.models.FoundItem;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -20,22 +22,27 @@ import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.UUID;
 
 public class FoundItemRepo {
 
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference("LostItems");
-
     MutableLiveData<FoundItem> lostItemMutableLiveData;
     MutableLiveData<List<FoundItem>> allitems;
   public  MutableLiveData<Boolean> shouldClose;
+    public MutableLiveData<List<Notification>>  notificationlist;
+
 
     public FoundItemRepo() {
         lostItemMutableLiveData = new MutableLiveData<>(new FoundItem());
         allitems =  new MutableLiveData<>(new ArrayList<>());
         shouldClose = new MutableLiveData<>(new Boolean(false));
+        notificationlist =  new MutableLiveData<>(new ArrayList<>());
     }
 
     public MutableLiveData<FoundItem> getLostItemMutableLiveData() {
@@ -56,8 +63,10 @@ public class FoundItemRepo {
     public void addLostItem(ProgressDialog progressDialog) {
         FoundItem lostItem = getLostItem();
         lostItem.setUploadedBy(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        String id  = UUID.randomUUID().toString();
+        lostItem.setId(id);
 //        DatabaseReference reference  = FirebaseDatabase.getInstance().getReference("LostItems");
-        reference.child(lostItem.getDetail() + lostItem.getTime()).setValue(lostItem).addOnSuccessListener(unused -> {
+        reference.child(id).setValue(lostItem).addOnSuccessListener(unused -> {
             System.out.println("successsfully added");
             uploadItemImage(progressDialog);
 
@@ -84,7 +93,7 @@ public class FoundItemRepo {
                 ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
                     public void onSuccess(Uri uri) {
-                        reference.child(getLostItem().getDetail() + getLostItem().getTime()).child("image").setValue(String.valueOf(uri));
+                        reference.child(getLostItem().getId()).child("image").setValue(String.valueOf(uri));
                         System.out.println("uploadaed image");
                         progressDialog.cancel();
                         shouldClose.setValue(new Boolean(true));
@@ -134,6 +143,52 @@ List<FoundItem> itemlist = new ArrayList<>();
        });
 
         return allitems;
+    }
+
+    public void addNotification(FoundItem itemdetail){
+        if(itemdetail.getUploadedBy().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())){
+            return ;
+        }
+        DatabaseReference temprefre = FirebaseDatabase.getInstance().getReference("Notifications");
+itemdetail.setIsclaimed(true);
+        Notification notification = new Notification();
+        notification.detail = "this item is claimed";
+        notification.date =  new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
+        notification.time = new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(new Date());
+
+
+     temprefre.child(itemdetail.getId()).setValue(notification).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                System.out.println("updated successfully");
+            }
+        });
+
+//        temprefre.push().setValue(notification).addOnSuccessListener(new OnSuccessListener<Void>() {
+//            @Override
+//            public void onSuccess(Void unused) {
+//
+//            }
+//        });
+    }
+
+    public MutableLiveData<List<Notification>> getAllNotifications(){
+        List<Notification> list = new ArrayList<>();
+        FirebaseDatabase.getInstance().getReference("Notifications").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot postSnapshot: snapshot.getChildren()){
+                    list.add(postSnapshot.getValue(Notification.class));
+                }
+                notificationlist.setValue(list);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+        return notificationlist;
     }
 
 

@@ -10,11 +10,16 @@
     type="com.example.lostnexus.models.FoundItem" />
 
     </data>
+    <ScrollView
+        android:id="@+id/scrolView_account"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <LinearLayout
+            android:id="@+id/form_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
@@ -170,7 +175,28 @@
                     android:hint="Near By" />
 
             </com.google.android.material.textfield.TextInputLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="serif-monospace"
+                android:text="Description"
+                android:textSize="20dp" />
 
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/description"
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minLines="3"
+                android:text="@={lostItem.description}"
+
+                android:hint="Description" />
+            </com.google.android.material.textfield.TextInputLayout>
 
 <!--<LinearLayout-->
 <!--    android:layout_width="match_parent"-->
@@ -228,38 +254,39 @@
 
                 android:src="@drawable/ic_launcher_background"
                 android:layout_gravity="center_horizontal" />
+
             <Button
 
-                style="@style/Widget.Material3.Button.IconButton.Outlined"
                 android:id="@+id/editimage"
-                app:icon="@android:drawable/ic_menu_edit"
-                android:textColor="@color/green"
+                style="@style/Widget.Material3.Button.IconButton.Outlined"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
                 android:layout_gravity="end"
                 android:layout_marginEnd="20dp"
+
+                android:layout_marginBottom="10dp"
                 android:onClick="addImage"
+                android:textColor="@color/green"
                 android:textSize="10dp"
-                />
+                app:icon="@android:drawable/ic_menu_edit" />
 
 
         </LinearLayout>
 
-        <Button
+<Button
+    android:id="@+id/add_item"
             style="@style/Widget.Material3.Button.ElevatedButton.Icon"
-    app:icon="@drawable/add"
-            android:enabled="false"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:id="@+id/add_item"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Add"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="20dp"
+android:layout_below="@id/form_layout"
+            android:layout_centerHorizontal="true"
+    android:layout_marginRight="20dp"
             android:layout_marginBottom="10dp"
+            android:enabled="false"
             android:onClick="addData"
-            />
+            android:text="Add"
+            app:icon="@drawable/add" />
 
 <TextView
     android:id="@+id/lattitude"
@@ -273,5 +300,8 @@
             android:layout_height="wrap_content"
             android:visibility="invisible"
             android:text="@={lostItem.longtitude}" />
+
     </RelativeLayout>
+</ScrollView>
+
 </layout>

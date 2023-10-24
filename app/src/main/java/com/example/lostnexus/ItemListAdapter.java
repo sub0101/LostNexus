@@ -2,6 +2,7 @@ package com.example.lostnexus;
 
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -37,6 +38,8 @@ public ItemListAdapter(Context context , List<FoundItem> lostItemList){
     public void onBindViewHolder(@NonNull ItemViewHolder holder, int position) {
      FoundItem lostItem  = lostItemList.get(position);
         holder.itemCardBinding.setItemdata(lostItem);
+        holder.itemCardBinding.carView.setOnClickListener(new MonCLickListner());
+
     }
 
     @Override
@@ -52,7 +55,19 @@ public ItemListAdapter(Context context , List<FoundItem> lostItemList){
         public ItemViewHolder(@NonNull ItemCardBinding itemView) {
             super(itemView.getRoot());
             itemCardBinding  = itemView;
+
+
+        }
+
+
+    }
+    public class MonCLickListner implements View.OnClickListener{
+
+        @Override
+        public void onClick(View v) {
+            System.out.println("clicked card");
         }
     }
+
 
 }

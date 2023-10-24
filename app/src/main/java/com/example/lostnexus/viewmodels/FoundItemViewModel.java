@@ -1,6 +1,7 @@
 package com.example.lostnexus.viewmodels;
 
 import android.app.Application;
+import android.app.NotificationChannel;
 import android.app.ProgressDialog;
 import android.widget.ImageView;
 
@@ -11,16 +12,22 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.bumptech.glide.Glide;
+import com.example.lostnexus.Notification;
 import com.example.lostnexus.models.FoundItem;
 import com.example.lostnexus.repository.FoundItemRepo;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.List;
 
+import kotlin.Unit;
+
 public class FoundItemViewModel extends AndroidViewModel {
    FoundItemRepo lostItemRepo;
+
     MutableLiveData<FoundItem> lostItemLiveData;
     public MutableLiveData<Boolean> shouldClose;
     public MutableLiveData<List<FoundItem>> allitems;
+    public MutableLiveData<List<Notification>>  notificationlsit;
 
     public FoundItemViewModel(@NonNull Application application) {
         super(application);
@@ -51,10 +58,10 @@ allitems =  lostItemRepo.getAllItems();
     }
 
 
-    @BindingAdapter({"bind:imgUrl"})
-    public static void setProfilePicture(ImageView imageView, String imgUrl) {
-        Glide.with(imageView.getContext()).load(imgUrl).into(imageView);
-    }
+//    @BindingAdapter({"bind:imgUrl"})
+//    public static void setProfilePicture(ImageView imageView, String imgUrl) {
+//        Glide.with(imageView.getContext()).load(imgUrl).into(imageView);
+//    }
 
     public boolean validate(){
 
@@ -65,6 +72,21 @@ allitems =  lostItemRepo.getAllItems();
 System.out.println(b + "hai");
         return b;
     }
+
+    public void addNotification(FoundItem foundItem){
+        if(foundItem.getUploadedBy().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())){
+
+        }
+lostItemRepo.addNotification(foundItem);
+
+    }
+
+    public MutableLiveData<List<Notification>> getAllNotifications(){
+return lostItemRepo.getAllNotifications();
+    }
+
+
+
 
 
 }

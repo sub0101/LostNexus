@@ -1,16 +1,61 @@
 package com.example.lostnexus.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.widget.ImageView;
 
+import androidx.annotation.NonNull;
 import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
 import androidx.databinding.BindingAdapter;
 
 import com.bumptech.glide.Glide;
 
-public class FoundItem extends BaseObservable {
+public class FoundItem extends BaseObservable implements Parcelable {
     public String detail="" , type="" , date="" , time="" , location="" , nearby="" ,image="",state,  city,uploadedBy="";
-  public  String lattitude="" , longtitude="";
+  public  String lattitude="" , longtitude=""  ,description="";
+ public  Boolean isclaimed = false;
+
+ String id;
+
+    protected FoundItem(Parcel in) {
+        detail = in.readString();
+        type = in.readString();
+        date = in.readString();
+        time = in.readString();
+        location = in.readString();
+        nearby = in.readString();
+        image = in.readString();
+        state = in.readString();
+        city = in.readString();
+        uploadedBy = in.readString();
+        lattitude = in.readString();
+        longtitude = in.readString();
+        description = in.readString();
+        byte tmpIsclaimed = in.readByte();
+        isclaimed = tmpIsclaimed == 0 ? null : tmpIsclaimed == 1;
+        id = in.readString();
+    }
+
+    public static final Creator<FoundItem> CREATOR = new Creator<FoundItem>() {
+        @Override
+        public FoundItem createFromParcel(Parcel in) {
+            return new FoundItem(in);
+        }
+
+        @Override
+        public FoundItem[] newArray(int size) {
+            return new FoundItem[size];
+        }
+    };
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
     public FoundItem() {
     }
@@ -56,7 +101,6 @@ public class FoundItem extends BaseObservable {
 
     @Bindable
     public String getDetail() {
-        System.out.println(detail);
         return detail;
     }
 
@@ -133,5 +177,55 @@ public class FoundItem extends BaseObservable {
     @BindingAdapter({"image"})
     public static void setItemImage(ImageView imageView, String imgUrl) {
         Glide.with(imageView.getContext()).load(imgUrl).into(imageView);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel dest, int flags) {
+//dest.writeString(detail);
+//        dest.writeString(date);
+//        dest.writeString(time);
+//        dest.writeString(type);
+//        dest.writeString(location);
+//        dest.writeString(lattitude);
+//        dest.writeString(lo);
+//        dest.writeString(detail);
+//        dest.writeString(detail);
+
+        dest.writeString(detail);
+        dest.writeString(type);
+        dest.writeString(date);
+        dest.writeString(time);
+        dest.writeString(location);
+        dest.writeString(nearby);
+        dest.writeString(image);
+        dest.writeString(state);
+        dest.writeString(city);
+        dest.writeString(uploadedBy);
+        dest.writeString(lattitude);
+        dest.writeString(longtitude);
+        dest.writeString(description);
+        dest.writeByte((byte) (isclaimed == null ? 0 : isclaimed ? 1 : 2));
+        dest.writeString(id);
+    }
+
+    public Boolean getIsclaimed() {
+        return isclaimed;
+    }
+
+    public void setIsclaimed(Boolean isclaimed) {
+        this.isclaimed = isclaimed;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }

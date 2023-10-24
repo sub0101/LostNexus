@@ -91,6 +91,7 @@ setFousChangeListner();
             new ActivityResultCallback<ActivityResult>() {
                 @Override
                 public void onActivityResult(ActivityResult result) {
+                    if(result.getResultCode()!=200) return;
                     String st = result.getData().getStringExtra("address");
                     double latt = result.getData().getDoubleExtra("lat" , -1);
                     double longt = result.getData().getDoubleExtra("longt" , -1);
@@ -147,6 +148,7 @@ if(requestCode == 200){
         lostAddFragmentBinding.nearby.addTextChangedListener(new TextChangeListner());
         lostAddFragmentBinding.time.addTextChangedListener(new TextChangeListner());
         lostAddFragmentBinding.date.addTextChangedListener(new TextChangeListner());
+
 
 lostAddFragmentBinding.detail.setOnFocusChangeListener(new FocusChangeListner());
         lostAddFragmentBinding.time.setOnFocusChangeListener(new FocusChangeListner());
@@ -276,59 +278,6 @@ lostAddFragmentBinding.time.setText(hour + ":" + min+" "+format);
 
 
     }
-
-   public  void gotolocation(View view){
-String lat = mainViewModel.getLostItemLiveData().getValue().getLattitude();
-String longt = mainViewModel.getLostItemLiveData().getValue().getLongtitude();
-String address = mainViewModel.getLostItemLiveData().getValue().getLocation();
-
-       if(lat!="" && longt!="")
-       {
-           Uri mapUri = Uri.parse("geo:0,0?q=" +lat+","+ longt+"(label)");
-           Intent mapIntent = new Intent(Intent.ACTION_VIEW, mapUri);
-           mapIntent.setPackage("com.google.android.apps.maps");
-           startActivity(mapIntent);
-       }
-       else if(!address.equals("")){
-//       String []str  =   getLonglat(address);
-
-           Uri mapUri = Uri.parse("geo:0,0?q=" + Uri.encode(address));
-//           System.out.println(str[0] + " " + str[1] + "is itherere");
-//           Uri mapUri = Uri.parse("geo:0,0?q=" +str[0]+","+ str[1]+"(label)");
-
-           Intent mapIntent = new Intent(Intent.ACTION_VIEW, mapUri);
-           mapIntent.setPackage("com.google.android.apps.maps");
-           startActivity(mapIntent);
-       }
-       else {
-           Toast.makeText(this ,"please select location or add address of the location" ,Toast.LENGTH_SHORT ).show();
-       }
-
-    }
-//    private String[] getLonglat(String strAddress){
-//        Geocoder coder = new Geocoder(this);
-//        List<Address> address;
-//        Address location = null;
-//        try {
-//            address = coder.getFromLocationName(strAddress, 2);
-//            if (address == null) {
-//                return null;
-//            }
-//           location = address.get(0);
-//            location.getLatitude();
-//            location.getLongitude();
-//System.out.println(location.getLatitude() + " " +location.getLongitude() +"is real");
-////            p1 = new LatLng((double) (location.getLatitude() * 1E6),
-////                    (double) (location.getLongitude() * 1E6));
-//
-////            return p1;
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        String str[] = {String.valueOf(location.getLatitude()), String.valueOf(location.getLongitude())};
-//   return str;
-//
-//    }
 
 
     void validateData(){

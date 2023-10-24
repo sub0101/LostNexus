@@ -51,8 +51,8 @@ repository.updateUserProfile();
 
 
 
-    @BindingAdapter({"bind:imgUrl"})
-    public static void setProfilePicture(ImageView imageView, String imgUrl) {
-        Glide.with(imageView.getContext()).load(imgUrl).into(imageView);
-    }
+//    @BindingAdapter({"bind:imgUrl"})
+//    public static void setProfilePicture(ImageView imageView, String imgUrl) {
+//        Glide.with(imageView.getContext()).load(imgUrl).into(imageView);
+//    }
 }
