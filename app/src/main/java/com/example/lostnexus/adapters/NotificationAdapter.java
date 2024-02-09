@@ -1,4 +1,4 @@
-package com.example.lostnexus;
+package com.example.lostnexus.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -12,6 +12,8 @@ import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.ListAdapter;
 
+import com.example.lostnexus.Notification;
+import com.example.lostnexus.R;
 import com.example.lostnexus.databinding.FragmentNotificationBinding;
 
 import org.w3c.dom.Text;

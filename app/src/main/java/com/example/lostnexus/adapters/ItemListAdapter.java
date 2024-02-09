@@ -1,4 +1,4 @@
-package com.example.lostnexus;
+package com.example.lostnexus.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.lostnexus.R;
 import com.example.lostnexus.databinding.ItemCardBinding;
 import com.example.lostnexus.models.FoundItem;
 
@@ -21,7 +22,7 @@ public static List<FoundItem> lostItemList;
 static Context context;
 ItemCardBinding itemCardBinding;
 public ItemListAdapter(Context context , List<FoundItem> lostItemList){
-    this.context =context;
+//    this.context =context;
     this.lostItemList =  lostItemList;
     System.out.println(context);
 

@@ -22,8 +22,10 @@ import android.view.View;
 import android.widget.Toast;
 
 
+import com.example.lostnexus.adapters.FoundItemListAdapter;
 import com.example.lostnexus.databinding.FragmentAllItemsBinding;
 import com.example.lostnexus.models.FoundItem;
+import com.example.lostnexus.models.UserProfile;
 import com.example.lostnexus.viewmodels.FoundItemViewModel;
 
 import java.util.ArrayList;
@@ -137,6 +139,11 @@ List<FoundItem> filteredlist =  new ArrayList<>();
 //        intent.putExtra("possition",position);
         intent.putExtra("item" , item);
         startActivity(intent);
+
+    }
+
+    @Override
+    public void onClick(View view, UserProfile userProfile) {
 
     }
 

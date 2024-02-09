@@ -8,10 +8,13 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.databinding.BindingAdapter;
 import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 
 import com.bumptech.glide.Glide;
+import com.example.lostnexus.Event;
 import com.example.lostnexus.Notification;
 import com.example.lostnexus.models.FoundItem;
 import com.example.lostnexus.repository.FoundItemRepo;
@@ -23,12 +26,18 @@ import kotlin.Unit;
 
 public class FoundItemViewModel extends AndroidViewModel {
    FoundItemRepo lostItemRepo;
+    private Event showDialogEvent = new Event();
 
+    public void showDialog(String str) {
+        showDialogEvent.setValue(str);
+    }
+
+    public void observeShowDialogEvent(LifecycleOwner owner, Observer<String> observer) {
+        showDialogEvent.observe(owner, observer);
+    }
     MutableLiveData<FoundItem> lostItemLiveData;
     public MutableLiveData<Boolean> shouldClose;
     public MutableLiveData<List<FoundItem>> allitems;
-    public MutableLiveData<List<Notification>>  notificationlsit;
-
     public FoundItemViewModel(@NonNull Application application) {
         super(application);
 lostItemRepo = new FoundItemRepo();
@@ -58,26 +67,22 @@ allitems =  lostItemRepo.getAllItems();
     }
 
 
-//    @BindingAdapter({"bind:imgUrl"})
-//    public static void setProfilePicture(ImageView imageView, String imgUrl) {
-//        Glide.with(imageView.getContext()).load(imgUrl).into(imageView);
-//    }
-
     public boolean validate(){
 
         FoundItem item = lostItemLiveData.getValue();
-//        System.out.println(item.getDetail()+"inside the validate");
         boolean b = !item.getDetail().equals("") && !item.getImage().equals("") && !item.getNearby().equals("")
                 && !item.getLocation().equals("") && !item.getDate().equals("") && !item.getTime().equals("");
-System.out.println(b + "hai");
         return b;
     }
 
     public void addNotification(FoundItem foundItem){
         if(foundItem.getUploadedBy().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())){
-
+showDialog("Same User Can not claim Same item");
+return ;
         }
+
 lostItemRepo.addNotification(foundItem);
+        showDialog("Item is Claimed");
 
     }
 

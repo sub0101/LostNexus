@@ -3,6 +3,7 @@ package com.example.lostnexus.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.BaseObservable;
@@ -175,9 +176,15 @@ public class FoundItem extends BaseObservable implements Parcelable {
     }
 
     @BindingAdapter({"image"})
-    public static void setItemImage(ImageView imageView, String imgUrl) {
+    public static void setImage(ImageView imageView, String imgUrl) {
         Glide.with(imageView.getContext()).load(imgUrl).into(imageView);
     }
+    @BindingAdapter({"text"})
+    public static  void setIsClaimed(TextView view ,String str){
+        if(str.equals("false")) view.setText("Item is Not Claimed");
+        else view.setText("Item is Claimed");
+    }
+
 
     @Override
     public int describeContents() {

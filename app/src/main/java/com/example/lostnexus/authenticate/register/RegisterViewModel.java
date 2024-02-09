@@ -148,7 +148,7 @@ public boolean isInputValid()
     {
 System.out.println("profile created");
 DatabaseReference reference  = FirebaseDatabase.getInstance().getReference("UserProfile");
-reference.child(uid).setValue(new UserProfile(name , contact , "https://firebasestorage.googleapis.com/v0/b/lostnexus0101.appspot.com/o/peakpx.jpg?alt=media&token=2a3f538f-e8ac-48f0-9da0-d74839670f56", "d","v" , "d" ,"d" ,"s"));
+reference.child(uid).setValue(new UserProfile(name , contact , "https://firebasestorage.googleapis.com/v0/b/lostnexus0101.appspot.com/o/peakpx.jpg?alt=media&token=2a3f538f-e8ac-48f0-9da0-d74839670f56", "d" ,"v" ,uid, "d" ,"d" ,"s"));
 
     }
 

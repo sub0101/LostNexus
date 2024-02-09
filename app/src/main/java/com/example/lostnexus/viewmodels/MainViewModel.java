@@ -2,23 +2,21 @@ package com.example.lostnexus.viewmodels;
 
 import android.app.Application;
 import android.app.ProgressDialog;
-import android.view.View;
-import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
-import androidx.databinding.BindingAdapter;
 import androidx.lifecycle.AndroidViewModel;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.bumptech.glide.Glide;
-import com.example.lostnexus.FoundItemListAdapter;
+import com.example.lostnexus.adapters.FoundItemListAdapter;
 import com.example.lostnexus.repository.Repository;
 import com.example.lostnexus.models.UserProfile;
+
+import java.util.ArrayList;
 
 public class MainViewModel extends AndroidViewModel {
 
     MutableLiveData<UserProfile> userProfileMutableLiveData;
+    MutableLiveData<ArrayList<UserProfile>> alluserProfile ;
     MutableLiveData<FoundItemListAdapter> lostItemLiveData;
     Repository  repository;
     public MainViewModel(@NonNull Application application) {
@@ -33,6 +31,10 @@ public class MainViewModel extends AndroidViewModel {
 
 
 
+    public MutableLiveData<ArrayList<UserProfile>> getAllUserProfileMutableLiveData() {
+        alluserProfile = repository.getAlluserProfile();
+        return  alluserProfile;
+    }
     public void setUserProfileMutableLiveData(MutableLiveData<UserProfile> userProfileMutableLiveData) {
         this.userProfileMutableLiveData = userProfileMutableLiveData;
     }
@@ -47,12 +49,4 @@ repository.updateUserProfile();
         repository.uploadImage(progressDialog);
     }
 
-
-
-
-
-//    @BindingAdapter({"bind:imgUrl"})
-//    public static void setProfilePicture(ImageView imageView, String imgUrl) {
-//        Glide.with(imageView.getContext()).load(imgUrl).into(imageView);
-//    }
 }

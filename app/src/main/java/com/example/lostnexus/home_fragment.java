@@ -24,6 +24,7 @@ FragmentHomeScreenBinding homeScreenBinding;
 
 InitialItemFragment initialItemFragment;
 NotificationFragment notificationFragment;
+Chat_fragment chatFragment;
 AllItemsFragment allItemsFragment;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -51,6 +52,7 @@ setInitialView();
         allItemsFragment = new AllItemsFragment();
         initialItemFragment  = new InitialItemFragment();
         notificationFragment = new NotificationFragment();
+        chatFragment =  new Chat_fragment();
         bottomNavigationView = homeScreenBinding.bottomNavigationView;
         bottomNavigationView.setBackground(null);
         bottomNavigationView.setOnItemSelectedListener(new home_fragment.BottomNavigationItemListner());
@@ -73,6 +75,7 @@ setCurrentFragment(initialItemFragment);
             else if(id == R.id.notification){
                 setCurrentFragment(notificationFragment);
             }
+            else if(id == R.id.chat) setCurrentFragment(chatFragment);
             return true;
         }
 

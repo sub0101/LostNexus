@@ -2,11 +2,13 @@ package com.example.lostnexus;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import com.example.lostnexus.databinding.ActivityItemDetailBinding;
 import com.example.lostnexus.databinding.ActivityItemDetailBindingImpl;
@@ -27,6 +29,8 @@ public class ItemDetail extends AppCompatActivity {
         setContentView(R.layout.activity_item_detail);
         binding = DataBindingUtil.setContentView(this , R.layout.activity_item_detail );
         FoundItem item  =  getIntent().getParcelableExtra("item" );
+
+//        if(item.isclaimed) binding.claim.setEnabled(false);
         viewModel =  new ViewModelProvider(this).get(FoundItemViewModel.class);
         binding.setItemdetail(item);
 
@@ -39,4 +43,14 @@ viewModel.addNotification(item);
             }
         });
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        viewModel.observeShowDialogEvent(this, new Observer<String>() {
+            @Override
+            public void onChanged(String st) {
+                Toast.makeText(getBaseContext() , st , Toast.LENGTH_SHORT).show();
+            }
+        });    }
 }

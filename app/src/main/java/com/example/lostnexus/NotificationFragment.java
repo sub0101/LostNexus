@@ -2,10 +2,8 @@ package com.example.lostnexus;
 
 import android.os.Bundle;
 
-import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -14,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
+import com.example.lostnexus.adapters.NotificationAdapter;
 import com.example.lostnexus.databinding.FragmentNotificationBinding;
 import com.example.lostnexus.viewmodels.FoundItemViewModel;
 
@@ -55,6 +54,7 @@ return binding.getRoot();
         ListView listView = binding.listItem;
         NotificationAdapter notificationAdapter = new NotificationAdapter(notificationList , getContext());
         listView.setAdapter(notificationAdapter);
+
     }
 
 }

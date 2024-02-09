@@ -1,17 +1,16 @@
-package com.example.lostnexus;
+package com.example.lostnexus.adapters;
 
 import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.lostnexus.ItemClickListener;
+import com.example.lostnexus.R;
 import com.example.lostnexus.databinding.Itemcard2Binding;
 import com.example.lostnexus.models.FoundItem;
 
@@ -23,7 +22,7 @@ public class FoundItemListAdapter extends RecyclerView.Adapter<FoundItemListAdap
 Context context;
 List<FoundItem> lostItemList;
 Itemcard2Binding itemcard2Binding;
-    private  ItemClickListener clickListener;
+    private ItemClickListener clickListener;
 
 
 public FoundItemListAdapter(Context context , List<FoundItem> lostItemList){

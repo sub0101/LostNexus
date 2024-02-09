@@ -1,15 +1,17 @@
 package com.example.lostnexus.repository;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.net.Uri;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.lostnexus.Notification;
-import com.example.lostnexus.authenticate.validators.LostItemValidator;
+import com.example.lostnexus.models.Message;
+
 import com.example.lostnexus.models.FoundItem;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -65,17 +67,10 @@ public class FoundItemRepo {
         lostItem.setUploadedBy(FirebaseAuth.getInstance().getCurrentUser().getUid());
         String id  = UUID.randomUUID().toString();
         lostItem.setId(id);
-//        DatabaseReference reference  = FirebaseDatabase.getInstance().getReference("LostItems");
         reference.child(id).setValue(lostItem).addOnSuccessListener(unused -> {
-            System.out.println("successsfully added");
             uploadItemImage(progressDialog);
 
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                System.out.println("failed to addded");
-            }
-        });
+        }).addOnFailureListener(e -> System.out.println("failed to addded"));
 
     }
 
@@ -131,7 +126,6 @@ List<FoundItem> itemlist = new ArrayList<>();
                    itemlist.add(lostItem);
 
                }
-               System.out.println("after the values");
                allitems.setValue(itemlist);
 
            }
@@ -146,40 +140,58 @@ List<FoundItem> itemlist = new ArrayList<>();
     }
 
     public void addNotification(FoundItem itemdetail){
-        if(itemdetail.getUploadedBy().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())){
-            return ;
-        }
+
         DatabaseReference temprefre = FirebaseDatabase.getInstance().getReference("Notifications");
 itemdetail.setIsclaimed(true);
         Notification notification = new Notification();
-        notification.detail = "this item is claimed";
+        notification.id = itemdetail.getId();
+        notification.detail = "A item is claimed By a User";
         notification.date =  new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
         notification.time = new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(new Date());
 
-
-     temprefre.child(itemdetail.getId()).setValue(notification).addOnSuccessListener(new OnSuccessListener<Void>() {
+addinchatList(itemdetail);
+        temprefre.child(itemdetail.getUploadedBy()).child(itemdetail.getId()).setValue(notification).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
-                System.out.println("updated successfully");
+                Log.i("Notifications" ,"notifcation added");
+                itemdetail.setIsclaimed(true);
+                reference.child(itemdetail.getId()).setValue(itemdetail).addOnSuccessListener(unused1 -> {});
             }
         });
-
-//        temprefre.push().setValue(notification).addOnSuccessListener(new OnSuccessListener<Void>() {
-//            @Override
-//            public void onSuccess(Void unused) {
-//
-//            }
-//        });
     }
+    private void addinchatList(FoundItem item){
+        DatabaseReference  listref =  FirebaseDatabase.getInstance().getReference("ChatUsers");
+        DatabaseReference chatting = FirebaseDatabase.getInstance().getReference("Chatting");
+        Message message =  new Message();
+        message.setMessageId(UUID.randomUUID().toString());
+        message.setMessage("Hello this is my item");
+        message.setSenderId(FirebaseAuth.getInstance().getUid());
+        Date date =  new Date();
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat =  new SimpleDateFormat("dd-MM-yyyy '\n' HH:mm:ss ");
+
+        String str = dateFormat.format(new Date());
+        message.setTimestamp(str);
+
+        listref.child(FirebaseAuth.getInstance().getUid()).child("uuid").setValue(item.getUploadedBy()).addOnSuccessListener(unused -> {});
+       listref.child(item.getUploadedBy()).child("uuid").setValue(FirebaseAuth.getInstance().getUid()).addOnSuccessListener(unused -> {});
+        String randomKey = FirebaseDatabase.getInstance().getReference().push().getKey();
+
+        chatting.child(FirebaseAuth.getInstance().getUid()+item.getUploadedBy()).child(randomKey).setValue(message).addOnSuccessListener(unused -> {});
+        chatting.child(item.getUploadedBy()+FirebaseAuth.getInstance().getUid()).child(randomKey).setValue(message).addOnSuccessListener(unused -> {});
+
+
+    }
+
 
     public MutableLiveData<List<Notification>> getAllNotifications(){
         List<Notification> list = new ArrayList<>();
-        FirebaseDatabase.getInstance().getReference("Notifications").addValueEventListener(new ValueEventListener() {
+        FirebaseDatabase.getInstance().getReference("Notifications").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for(DataSnapshot postSnapshot: snapshot.getChildren()){
                     list.add(postSnapshot.getValue(Notification.class));
                 }
+
                 notificationlist.setValue(list);
             }
 

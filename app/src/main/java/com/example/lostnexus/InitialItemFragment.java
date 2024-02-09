@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.lostnexus.adapters.ItemListAdapter;
 import com.example.lostnexus.databinding.FragmentInitialItemBinding;
 import com.example.lostnexus.models.FoundItem;
 import com.example.lostnexus.viewmodels.FoundItemViewModel;
