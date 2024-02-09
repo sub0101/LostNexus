@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="itemcard"
+            type="com.example.lostnexus.models.FoundItem" />
+    </data>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="50dp"
+            >
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                >
+                <!--        <FrameLayout-->
+                <!--            android:id="@+id/container"-->
+                <!--            android:layout_width="match_parent"-->
+                <!--            android:layout_height="match_parent"-->
+                <!--            />-->
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Recent  Items"
+                    android:textSize="@dimen/headerTextSize"
+                    android:layout_alignParentTop="true"
+                    />
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recent_lostview"
+                    android:layout_width="match_parent"
+                    android:layout_height="250dp"
+                    android:layout_marginTop="40dp"
+                    android:layout_marginBottom="5dp"
+
+                    />
+
+                <!--<TextView-->
+                <!--    android:layout_width="match_parent"-->
+                <!--    android:layout_height="wrap_content"-->
+                <!--    android:text=" More then 7:Days"-->
+                <!--    android:textSize="@dimen/headerTextSize"-->
+                <!--    android:layout_marginVertical="5dp"-->
+                <!--android:layout_below="@id/recent_lostview"-->
+                <!--    android:background="@color/loginBkColor"-->
+                <!--    />-->
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/productTitleTextView2"
+                    android:layout_width="wrap_content"
+                    android:layout_marginVertical="5dp"
+                    android:layout_below="@id/recent_lostview"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="12dp"
+                    android:textSize="@dimen/headerTextSize"
+
+                    android:text="More Then 7 days"
+
+                    />
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/itemview_week"
+                    android:layout_width="match_parent"
+                    android:layout_height="400dp"
+                    android:layout_below="@id/recent_lostview"
+                    android:layout_marginTop="40dp"
+                    />
+
+            </RelativeLayout>
+
+        </ScrollView>
+
+
+    </RelativeLayout>
+</layout>

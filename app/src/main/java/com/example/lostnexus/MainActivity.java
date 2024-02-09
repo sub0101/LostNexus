@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -20,6 +21,13 @@ import com.example.lostnexus.databinding.ActivityMainBinding;
 import com.example.lostnexus.databinding.NavHeaderMainBinding;
 import com.example.lostnexus.models.UserProfile;
 import com.example.lostnexus.viewmodels.MainViewModel;
+import com.google.android.gms.common.api.ResolvableApiException;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.location.LocationSettingsResponse;
+import com.google.android.gms.location.SettingsClient;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.navigation.NavigationView;
@@ -27,6 +35,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
+    private static final int REQUEST_CHECK_SETTINGS = 1;
     FirebaseAuth firebaseAuth;
     ActivityMainBinding mainBinding;
     NavHeaderMainBinding headerMainBinding;
@@ -57,6 +66,30 @@ System.out.println("no user");
 
             }
         }
+        LocationRequest locationRequest = LocationRequest.create();
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+
+        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder()
+                .addLocationRequest(locationRequest);
+
+        SettingsClient client = LocationServices.getSettingsClient(this);
+        Task<LocationSettingsResponse> task = client.checkLocationSettings(builder.build());
+
+        task.addOnSuccessListener(this, locationSettingsResponse -> {
+            // Location settings are satisfied; you can request location updates here.
+        });
+
+        task.addOnFailureListener(this, e -> {
+            // Location settings are not satisfied, but this can be fixed by showing the user a dialog.
+            try {
+                // Show a dialog to the user with the option to enable location services.
+                ResolvableApiException resolvable = (ResolvableApiException) e;
+                resolvable.startResolutionForResult(this, REQUEST_CHECK_SETTINGS);
+            } catch (IntentSender.SendIntentException sendEx) {
+                // Ignore the error.
+            }
+        });
+
 
     }
 
@@ -85,29 +118,12 @@ public void logout(View view)
     goToLoginActivity();
 }
 
-public void setInitialView(MainActivity mainActivity)
-{
-    setSupportActionBar(mainBinding.mainIncludeToolbar.toolbar);
-    ActionBarDrawerToggle toggle =  new ActionBarDrawerToggle(this , mainBinding.drawerLayout , mainBinding.mainIncludeToolbar.toolbar,R.string.open, R.string.close);
-    mainBinding.drawerLayout.addDrawerListener(toggle);
-toggle.syncState();
-    NavigationView navigationView = mainBinding.navigation;
-    bottomNavigationView = mainBinding.homeFragment.bottomNavigationView;
-    bottomNavigationView.setBackground(null);
-    navigationView.setNavigationItemSelectedListener(this);
-   bottomNavigationView.setOnItemSelectedListener(new BottomNavigationItemListner());
-  bottomNavigationView.setSelectedItemId(R.id.home_bottomMenu);
- View view =   navigationView.getHeaderView(0);
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-        headerMainBinding = DataBindingUtil.inflate(getLayoutInflater() , view.getSourceLayoutResId() , mainBinding.navigation , true);
-    }
-    getSupportFragmentManager().beginTransaction().replace(mainBinding.mainContainer.getId() , new home_fragment()).commit();
 
-}
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.edit_profile) {//
+        System.out.println("inside profile");
+        if (item.getItemId() == R.id.edit_profile) {
 
                   Intent intent = new Intent(MainActivity.this , EditProfile.class);
                 startActivity(intent);
@@ -135,11 +151,23 @@ toggle.syncState();
 
 
     public void add_itemFragment(View view){
-//ItemAddFragment.display(getSupportFragmentManager());
         Intent intent =  new Intent(MainActivity.this , ItemAddFragment.class);
         startActivity(intent);
-//        overridePendingTransition(android.R.transition.slide_bottom ,android.R.transition.slide_bottom );
-//        overridePendingTransition(Animation.);
+    }
+
+    public void setInitialView(MainActivity mainActivity)
+    {
+        setSupportActionBar(mainBinding.mainIncludeToolbar.toolbar);
+        ActionBarDrawerToggle toggle =  new ActionBarDrawerToggle(this , mainBinding.drawerLayout , mainBinding.mainIncludeToolbar.toolbar,R.string.open, R.string.close);
+        mainBinding.drawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
+        NavigationView navigationView = mainBinding.navigation;
+navigationView.setNavigationItemSelectedListener(this);
+        View view =   navigationView.getHeaderView(0);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            headerMainBinding = DataBindingUtil.inflate(getLayoutInflater() , view.getSourceLayoutResId() , mainBinding.navigation , true);
+        }
+        getSupportFragmentManager().beginTransaction().replace(mainBinding.mainContainer.getId() , new home_fragment()).commit();
 
     }
 }

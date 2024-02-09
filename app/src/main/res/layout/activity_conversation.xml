@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="profile"
+            type="com.example.lostnexus.models.UserProfile" />
+    </data>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/loginBkColor"
+        tools:context=".ConversationActivity">
+
+        <include layout="@layout/toolbar_chatting"
+            android:id="@+id/toolbar" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerview"
+            android:layout_below="@+id/toolbar"
+            android:layout_above="@id/cardView"
+            android:layout_width="match_parent"
+            android:padding="10dp"
+            android:layout_height="match_parent" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardView"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            app:cardCornerRadius="30dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginRight="50dp"
+            android:layout_alignParentBottom="true"
+            >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                >
+                <com.google.android.material.textfield.TextInputEditText
+android:id="@+id/message_box"
+                    android:layout_width="290dp"
+                    android:layout_height="match_parent"
+                    android:hint="Type Message ..."
+                    android:gravity="center"
+                    android:background="@android:color/transparent"
+                    android:padding="18dp"
+                    android:layout_alignParentBottom="true" />
+                <ImageView
+                    android:id="@+id/attachment"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="12dp"
+                    app:srcCompat="@drawable/ic_attachment"
+                    app:tint="#676767" />
+
+                <ImageView
+                    android:id="@+id/camera"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_gravity="center"
+                    android:layout_marginRight="12dp"
+                    app:srcCompat="@drawable/ic_camera"
+                    app:tint="#676767" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/send_btn"
+            android:layout_width="45dp"
+            style="@style/Widget.Design.FloatingActionButton"
+            android:layout_height="40dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="40dp"
+            android:layout_marginBottom="15dp"
+            android:background="@android:drawable/ic_menu_send"
+
+            />
+
+
+    </RelativeLayout>
+</layout>

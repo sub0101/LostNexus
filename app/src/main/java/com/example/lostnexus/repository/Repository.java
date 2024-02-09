@@ -1,13 +1,14 @@
 package com.example.lostnexus.repository;
 
 import android.app.ProgressDialog;
+import android.hardware.usb.UsbRequest;
 import android.net.Uri;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.lostnexus.models.LostItem;
+import com.example.lostnexus.Notification;
 import com.example.lostnexus.models.UserProfile;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -22,15 +23,38 @@ import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
 public class Repository {
 
     DatabaseReference reference= FirebaseDatabase.getInstance().getReference("UserProfile");
+    MutableLiveData<ArrayList<UserProfile>> alluserProfile;
+
+    public MutableLiveData<ArrayList<UserProfile>> getAlluserProfile(){
+
+        reference.addValueEventListener(new ValueEventListener() {
+            ArrayList<UserProfile> userProfiles =  new ArrayList<>();
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot postSnapshot: snapshot.getChildren()){
+                    userProfiles.add(postSnapshot.getValue(UserProfile.class));
+                }
+            alluserProfile.postValue(userProfiles);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+        return alluserProfile;
+    }
 
   private  MutableLiveData<UserProfile> userProfileMutableLiveData;
     public Repository() {
         userProfileMutableLiveData= new MutableLiveData<>();
+        alluserProfile =  new MutableLiveData<>();
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {

@@ -139,8 +139,7 @@ public class mapFragment extends AppCompatActivity implements OnMapReadyCallback
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent();
-                System.out.println(address + " hai");
-                System.out.println(lat + "hai");
+
                 intent.putExtra("lat", lat);
                 intent.putExtra("longt", longt);
                 intent.putExtra("address", address);
@@ -150,7 +149,11 @@ public class mapFragment extends AppCompatActivity implements OnMapReadyCallback
         });
 
         if (!Places.isInitialized()) {
+<<<<<<< HEAD
             Places.initialize(getApplicationContext(), "AIzaSyBWBobt-irrOEDKnnvAMtgvZZONVsriqJU");
+=======
+            Places.initialize(getApplicationContext(), getString(R.string.google_api_key));
+>>>>>>> testHomeFragment
         }
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapView);
         mapFragment.getMapAsync(this);

@@ -1,7 +1,10 @@
 package com.example.lostnexus.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.widget.ImageView;
 
+import androidx.annotation.NonNull;
 import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
 import androidx.databinding.BindingAdapter;
@@ -13,18 +16,20 @@ import com.bumptech.glide.Glide;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 
-public class UserProfile extends BaseObservable {
- public   String name,email,contact,address;
+public class UserProfile extends BaseObservable implements Parcelable {
+ public   String name,email,contact,address,uuid;
    public String  gender , image,city,state;
 
-    public UserProfile() {
+   public UserProfile()
+   {
 
-    }
+   }
 
-    public UserProfile(String name, String email,String image, String contact, String address, String gender, String city, String state) {
+
+    public UserProfile(String name, String email,String image, String contact, String address, String uuid ,  String gender, String city, String state) {
         this.name = name;
         this.email = email;
-
+this.uuid  = uuid;
         this.contact = contact;
         this.address = address;
         this.gender = gender;
@@ -32,6 +37,30 @@ public class UserProfile extends BaseObservable {
         this.city = city;
         this.state = state;
     }
+
+    protected UserProfile(Parcel in) {
+        name = in.readString();
+        email = in.readString();
+        contact = in.readString();
+        address = in.readString();
+        uuid = in.readString();
+        gender = in.readString();
+        image = in.readString();
+        city = in.readString();
+        state = in.readString();
+    }
+
+    public static final Creator<UserProfile> CREATOR = new Creator<UserProfile>() {
+        @Override
+        public UserProfile createFromParcel(Parcel in) {
+            return new UserProfile(in);
+        }
+
+        @Override
+        public UserProfile[] newArray(int size) {
+            return new UserProfile[size];
+        }
+    };
 
     @Bindable
     public String getName() {
@@ -62,6 +91,30 @@ public class UserProfile extends BaseObservable {
 
     public void setAddress(String city) {
         this.address = city;
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
     }
 
     @Bindable
@@ -108,6 +161,24 @@ System.out.println("inside gender");
                 break;
             }
         }
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel parcel, int i) {
+        parcel.writeString(name);
+        parcel.writeString(email);
+        parcel.writeString(contact);
+        parcel.writeString(address);
+        parcel.writeString(uuid);
+        parcel.writeString(gender);
+        parcel.writeString(image);
+        parcel.writeString(city);
+        parcel.writeString(state);
     }
 }
 
